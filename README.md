@@ -1,1 +1,1 @@
-# GIF-Widghet
+# GIF-Widget
