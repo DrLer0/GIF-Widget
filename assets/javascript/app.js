@@ -26,13 +26,13 @@ function displayTopicGif() {
                         <img src=${results[i].images.fixed_height_still.url} data-state="still" 
                         data-animate=${results[i].images.fixed_height.url}
                         data-still=${results[i].images.fixed_height_still.url} class="gif" >
-                        <p>Rating: ${results[i].rating}</p>
+                        <p class="bg-primary text-white">Rating: ${results[i].rating}</p>
                         </div>
                         <div class="col">
                         <img src=${results[i + 1].images.fixed_height_still.url} data-state="still" 
                         data-animate=${results[i + 1].images.fixed_height.url}
                         data-still=${results[i + 1].images.fixed_height_still.url} class="gif" >
-                        <p>Rating: ${results[i].rating}</p>
+                        <p class="bg-primary text-white">Rating: ${results[i].rating}</p>
                         </div>
                         </div>`;
             $("#displayGifs").prepend(gif);

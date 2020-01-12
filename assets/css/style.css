@@ -1,0 +1,13 @@
+body{
+    /* background: url(../images/fruitbg.jpg) no-repeat center center fixed transparent; */
+    background-image: radial-gradient(rgba(118, 238, 82, 0.5), rgba(255, 255, 0, 0.5)), url(../images/fruitbg.jpg) ;
+    -webkit-background-size: contain;
+    -moz-background-size: contain;
+    -o-background-size: contain;
+    background-size: contain;
+    background-color: khaki;
+}
+
+form{
+    background-color: rgba(64, 224, 208, 0.671);
+}
