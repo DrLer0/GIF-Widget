@@ -1,9 +1,16 @@
-var topics = [];
+var topics = ['banana', 'apple', 'orange', 'watermelon', 'coconut'];
+var timesClicked = [0, 0, 0, 0, 0];
+var offset = 10;
 
 function displayTopicGif() {
     var topic = $(this).attr("data-topic");
+    var topicIndex = topics.indexOf(topic);
+
+    // console.log(timesClicked[topics.indexOf(topic)]);
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-        topic + "&api_key=DyNR5qoIQ82OcsP649xZanQX7Bhh9VPL&limit=10&rating=g";
+        topic + "&api_key=DyNR5qoIQ82OcsP649xZanQX7Bhh9VPL&limit=10&offset=" + (offset * timesClicked[topicIndex]);
+    timesClicked[topicIndex]++;
+    console.log(queryURL);
 
     // Creating an AJAX call for the specific movie button being clicked
     $.ajax({
@@ -11,22 +18,21 @@ function displayTopicGif() {
         method: "GET"
     }).then(function (response) {
         var results = response.data;
-        console.log(response);
         for (var i = 0; i < results.length; i += 2) {
             var stillUrl = results[i].images.fixed_height_still.url;
             var imageUrl = results[i].images.fixed_height.url;
             var gif = `<div class="row">
                         <div class="col">
-                        <p>Rating: ${results[i].rating}</p>
-                        <img class="gif" src=${results[i].images.fixed_height_still.url} data-state="still" 
+                        <img src=${results[i].images.fixed_height_still.url} data-state="still" 
                         data-animate=${results[i].images.fixed_height.url}
-                        data-still=${results[i].images.fixed_height_still.url}>
+                        data-still=${results[i].images.fixed_height_still.url} class="gif" >
+                        <p>Rating: ${results[i].rating}</p>
                         </div>
                         <div class="col">
-                        <p>Rating: ${results[i + 1].rating}</p>
-                        <img class="gif" src=${results[i + 1].images.fixed_height_still.url} data-state="still" 
+                        <img src=${results[i + 1].images.fixed_height_still.url} data-state="still" 
                         data-animate=${results[i + 1].images.fixed_height.url}
-                        data-still=${results[i + 1].images.fixed_height_still.url}>
+                        data-still=${results[i + 1].images.fixed_height_still.url} class="gif" >
+                        <p>Rating: ${results[i].rating}</p>
                         </div>
                         </div>`;
             $("#displayGifs").prepend(gif);
@@ -42,8 +48,6 @@ function renderButtons() {
 
     // Looping through the array of movies
     for (var i = 0; i < topics.length; i++) {
-        console.log(topics[i]);
-
         // Then dynamicaly generating buttons for each movie in the array
         // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
         var a = $("<button>");
@@ -65,18 +69,14 @@ $("#addTopic").on("click", function (event) {
 
     // Adding movie from the textbox to our array
     topics.push(topic);
+    timesClicked.push(0);
 
     // Calling renderButtons which handles the processing of our movie array
     renderButtons();
 });
 
-$("#gif").on("click", function () {
-    // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+function changeState() {
     var state = $(this).attr("data-state");
-    alert("clicked gif!");
-    // If the clicked image's state is still, update its src attribute to what its data-animate value is.
-    // Then, set the image's data-state to animate
-    // Else set src to the data-still value
     if (state === "still") {
         $(this).attr("src", $(this).attr("data-animate"));
         $(this).attr("data-state", "animate");
@@ -84,7 +84,8 @@ $("#gif").on("click", function () {
         $(this).attr("src", $(this).attr("data-still"));
         $(this).attr("data-state", "still");
     }
-});
+}
 
 $(document).on("click", ".topic-btn", displayTopicGif);
+$(document).on("click", ".gif", changeState);
 renderButtons();
